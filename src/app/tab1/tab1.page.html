@@ -1,0 +1,63 @@
+<ng-template #featuredPostTemplate let-post="post">
+  <ion-grid>
+    <ion-row>
+      <ng-container *ngIf="post.featured_image">
+        <ion-col size="12">
+          <ion-img [src]="post.featured_image"></ion-img>
+        </ion-col>
+      </ng-container>
+      <ion-col size="12">
+        <h2>
+          <ion-text>{{ post.title }}</ion-text>
+        </h2>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ng-template>
+
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>My Feed</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">My Feed</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ng-container *ngIf="busy">
+    <div class="ion-text-center">
+      <ion-spinner></ion-spinner>
+    </div>
+  </ng-container>
+
+  <ng-container *ngFor="let post of posts$ | async; let i = index">
+    <ion-item
+      detail="false"
+      [routerLink]="'/post/' + post.slug"
+      class="ion-margin-vertical"
+    >
+      <ng-container *ngIf="i === 0; else defaultPostTemplate">
+        <ng-container
+          *ngTemplateOutlet="featuredPostTemplate; context: { post: post }"
+        ></ng-container>
+      </ng-container>
+
+      <ng-template #defaultPostTemplate>
+        <ion-label>
+          {{ post.title }}
+          <br />
+          <small>{{ post.summary }}</small>
+        </ion-label>
+        <ng-container *ngIf="post.featured_image">
+          <ion-thumbnail slot="end">
+            <ion-img [src]="post.featured_image"></ion-img>
+          </ion-thumbnail>
+        </ng-container>
+      </ng-template>
+    </ion-item>
+  </ng-container>
+</ion-content>
