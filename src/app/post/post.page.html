@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button fill="clear" (click)="navigateBack()">
+        <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ng-container *ngIf="post; else busyOrError">
+    <h1>{{ post.title }}</h1>
+    <article class="ion-padding-top" [innerHTML]="post.body"></article>
+  </ng-container>
+
+  <ng-template #busyOrError>
+    <div class="ion-text-center">
+      <ion-spinner *ngIf="busy; else error"></ion-spinner>
+
+      <ng-template #error>
+        <ion-text
+          >This is embarrassing. You asked for some data, but we could not
+          provide it. Please try again or go back to the previous
+          page.</ion-text
+        >
+      </ng-template>
+    </div>
+  </ng-template>
+</ion-content>
